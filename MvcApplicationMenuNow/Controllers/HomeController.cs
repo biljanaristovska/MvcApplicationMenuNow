@@ -16,5 +16,11 @@ namespace MvcApplicationMenuNow.Controllers
             return View();
         }
 
+        public ActionResult CallJson(string urlVal)
+        {
+
+            return View();
+
+        }
     }
 }

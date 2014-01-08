@@ -5,40 +5,43 @@
 <h2>Login</h2>
 
 Web URL: <input type="text" id="url" /></br>
-Password: <input type="text" name="password" /></br>
-<button type="button" onclick="callJson()">Click Me!</button>
+Password: <input type="text" id="password" /></br>
+<button type="button" onclick="logIn()">Click Me!</button>
  <label id="results"></label>
 
 @section scripts{ 
 <script type="text/javascript">
 
-    function callJson() {
-        alert(1);
-        var urlVal = $('#url').val();
-      //  alert(urlVal);
-        $.ajax({
+    function logIn() {
 
-            type: "GET",
-           // url: "http://rmservice-bb.apphb.com/Service1.svc/getAllSettings", //Име на ф-цијата во контролерот
-            url: "http://google.com",
-            //contentType: "application/json; charset=utf-8",
-           dataType: "jsonp",
-            success: function (data) {
-                //alert(data);
-                $("#results").append(data);
-                
-
-            },
-
-            error: function (xhr, ajaxOptions, thrownError) {
-             alert(xhr.status);
-            alert(thrownError);
-      
-      }
-
-        });
-       
+        var result = callService();
+        
+        var obj = jQuery.parseJSON(result);
+        var temp = obj.getAllSettingsResult;
+        //console.log(temp);
+        for (var index in temp) {
+            if (temp[index].Key == "password") {
+                var val = temp[index].Value;
+            }
+        }
+        var pass = $("#password").val();
+        var url = $("#url").val();
+        //alert(val);
+        if (url == "http://rmservice-bb.apphb.com" && pass == val) {
+            alert("It's ok!");
+        }
+        else {
+            alert("Try again!");
+        }
     }
+
+    function callService() {
+
+        return '{"getAllSettingsResult":[{"Key":"name","Value":"McDonalds"},{"Key":"password","Value":"admink"}]}';
+
+    }
+    
+
 
 </script>
 

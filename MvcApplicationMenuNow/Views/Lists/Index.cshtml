@@ -3,4 +3,35 @@
 }
 
 <h2>Index</h2>
-<img src="https://www.dropbox.com/s/1gb7x6qybnhemqx/2014-01-02%2022.51.26.jpg" alt="some_text">
+
+<div>
+<ul class="list">
+</ul>
+</div>
+
+@section scripts{ 
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $.ajax({
+            type: 'GET',
+            url: "http://rmservice-bb.apphb.com/Service1.svc/getAllGroups",
+            dataType: 'json',
+            success: function (data) {
+                var temp = data.getAllGroupsResult;
+                for (var index in temp) {
+                    var img = new Image();
+                    img.src = temp[index].backgroundImage;
+                    console.log(img);
+                    var title = temp[index].title;
+
+                    $(".list").append("<li>" + title + " " + img + "</li>");
+
+                }
+            }
+        });
+    });
+
+</script>
+
+}

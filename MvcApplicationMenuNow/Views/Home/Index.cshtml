@@ -24,20 +24,17 @@ Password: <input type="text" id="password" /></br>
             url: url,
             dataType: 'json',
             success: function (data) {
-                console.log(data);
+                //console.log(data);
                 var temp = data.getAllSettingsResult;
-                //console.log(temp);
+                console.log(temp);
                 for (var index in temp) {
                     if (temp[index].Key == "password") {
                         var val = temp[index].Value;
                     }
                 }
                 var pass = $("#password").val();
-                var url = $("#url").val();
-                //alert(val);
                 if (pass == val) {
                     window.location.href = 'Lists';
-                    //alert(1);
                 }
                 else {
                     window.location.href = 'Home';
@@ -46,11 +43,6 @@ Password: <input type="text" id="password" /></br>
         });
     }
 
-    function callService() {
-
-        return '{"getAllSettingsResult":[{"Key":"name","Value":"McDonalds"},{"Key":"password","Value":"admin"}]}';
-
-    }
     
 
 

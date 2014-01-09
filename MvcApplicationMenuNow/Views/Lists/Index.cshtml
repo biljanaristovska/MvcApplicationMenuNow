@@ -53,7 +53,8 @@
                     datafields: [
                         { name: 'title' },
                         { name: 'subtitle' },
-                        { name: 'description' }
+                        { name: 'description' },
+                        { name: 'backgroundImage' }
                     ],
                     id: 'id',
                     url: url
@@ -88,13 +89,16 @@
                         // var descr = $("<div></div>");
                         // valueelement.html(item.descr);
                         var descr = item.originalItem.description;
-                        console.log(descr);
-                        var hiddenelement = $("<div><input type='hidden' id='description'/>"+descr+"</div>");
+                        var img = item.originalItem.backgroundImage;
+                        console.log(img);
+                        var hiddenelement = $("<div><input type='hidden' id='description'/>" + descr + "</div>");
+                        var pictures = $("<div>"+ "<img src='"+img+"'height='300' width='300'></div>");
                         //console.log(hiddenelement);
                         $("#selectionlog").children().remove();
                         $("#selectionlog").append(labelelement);
                         $("#selectionlog").append(valueelement);
                         $("#selectionlog").append(hiddenelement);
+                        $("#selectionlog").append(pictures);
                     }
                 }
             });

@@ -2,41 +2,26 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
-
-@*<div>
-<ul class="list">
-</ul>
-</div>*@
 <div id='content'>
+       <table> 
+       <tr>
+       <td>
         <div id='jqxWidget'>
         </div>
+        </td>
+        <td>
+        <div id='jqxWidgetGroups'></div> 
+        </td>
+        <td>
         <div id="selectionlog"></div>
+        </td>
+        </tr>
+       </table>
+        
 </div>
-    
+
 @section scripts{ 
 <script type="text/javascript">
-
-//    $(document).ready(function () {
-//        $.ajax({
-//            type: 'GET',
-//            url: "http://rmservice-bb.apphb.com/Service1.svc/getAllGroups",
-//            dataType: 'json',
-//            success: function (data) {
-//                var temp = data.getAllGroupsResult;
-//                for (var index in temp) {
-//                    var img = new Image();
-//                    img.src = temp[index].backgroundImage;
-//                    console.log(img);
-//                    var title = temp[index].title;
-//                    console.log(("<li>" + title +  "</li>"));
-//                    $(".list").append("<li>" + title + " " + img + "</li>");
-
-//                }
-//            }
-//        });
-    //    });
-
 
     $(document).ready(function () {
         // prepare the data
@@ -52,24 +37,71 @@
 
                 };
 
-  
+
         var dataAdapter = new $.jqx.dataAdapter(source);
         // Create a jqxListBox
         $("#jqxWidget").jqxListBox({ source: dataAdapter, displayMember: "title", valueMember: "subtitle", width: 400, height: 350, theme: '' });
-        $("#jqxWidget").bind('select', function (event) {
-            if (event.args) {
-                var item = event.args.item;
-                if (item) {
-                    var valueelement = $("<div></div>");
-                    valueelement.html(item.value);
-                    var labelelement = $("<div></div>");
-                    labelelement.html("<b>" + item.label + "</b>");
-                    $("#selectionlog").children().remove();
-                    $("#selectionlog").append(labelelement);
-                    $("#selectionlog").append(valueelement);
+
+        $("#jqxWidget").on('select', function (event) {
+
+            var args = event.args;
+            var index = args.item.index;
+            var url = 'http://rmservice-bb.apphb.com/Service1.svc/getAllItemsByGroup?group=group' + (index + 1);
+            var source =
+                {
+                    datatype: "json",
+                    datafields: [
+                        { name: 'title' },
+                        { name: 'subtitle' },
+                        { name: 'description' }
+                    ],
+                    id: 'id',
+                    url: url
+
+                };
+
+            var dataAdapter = new $.jqx.dataAdapter(source, {
+                downloadComplete: function (data, status, xhr) { },
+                loadComplete: function (data) { },
+                loadError: function (xhr, status, error) { }
+            });
+
+            $("#jqxWidgetGroups").jqxListBox({ source: dataAdapter,
+
+                displayMember: "title",
+                valueMember: "subtitle",
+                width: 400,
+                height: 350,
+                theme: ''
+
+            });
+
+            $("#jqxWidgetGroups").unbind('select');
+            $("#jqxWidgetGroups").bind('select', function (event) {
+                if (event.args) {
+                    var item = event.args.item;
+                    if (item) {
+                        var valueelement = $("<div></div>");
+                        valueelement.html(item.value);
+                        var labelelement = $("<div></div>");
+                        labelelement.html("<b>" + item.label + "</b>");
+                        // var descr = $("<div></div>");
+                        // valueelement.html(item.descr);
+                        var descr = item.originalItem.description;
+                        console.log(descr);
+                        var hiddenelement = $("<div><input type='hidden' id='description'/>"+descr+"</div>");
+                        //console.log(hiddenelement);
+                        $("#selectionlog").children().remove();
+                        $("#selectionlog").append(labelelement);
+                        $("#selectionlog").append(valueelement);
+                        $("#selectionlog").append(hiddenelement);
+                    }
                 }
-            }
+            });
         });
+
+
+
     });
 
 </script>

@@ -4,29 +4,69 @@
 
 <h2>Index</h2>
 
-<div>
+@*<div>
 <ul class="list">
 </ul>
+</div>*@
+<div id='content'>
+        <div id='jqxWidget'>
+        </div>
+        <div id="selectionlog"></div>
 </div>
-
+    
 @section scripts{ 
 <script type="text/javascript">
 
+//    $(document).ready(function () {
+//        $.ajax({
+//            type: 'GET',
+//            url: "http://rmservice-bb.apphb.com/Service1.svc/getAllGroups",
+//            dataType: 'json',
+//            success: function (data) {
+//                var temp = data.getAllGroupsResult;
+//                for (var index in temp) {
+//                    var img = new Image();
+//                    img.src = temp[index].backgroundImage;
+//                    console.log(img);
+//                    var title = temp[index].title;
+//                    console.log(("<li>" + title +  "</li>"));
+//                    $(".list").append("<li>" + title + " " + img + "</li>");
+
+//                }
+//            }
+//        });
+    //    });
+
+
     $(document).ready(function () {
-        $.ajax({
-            type: 'GET',
-            url: "http://rmservice-bb.apphb.com/Service1.svc/getAllGroups",
-            dataType: 'json',
-            success: function (data) {
-                var temp = data.getAllGroupsResult;
-                for (var index in temp) {
-                    var img = new Image();
-                    img.src = temp[index].backgroundImage;
-                    console.log(img);
-                    var title = temp[index].title;
+        // prepare the data
+        var source =
+                {
+                    datatype: "json",
+                    datafields: [
+                        { name: 'title' },
+                        { name: 'subtitle' }
+                    ],
+                    id: 'id',
+                    url: 'http://rmservice-bb.apphb.com/Service1.svc/getAllGroups'
 
-                    $(".list").append("<li>" + title + " " + img + "</li>");
+                };
 
+  
+        var dataAdapter = new $.jqx.dataAdapter(source);
+        // Create a jqxListBox
+        $("#jqxWidget").jqxListBox({ source: dataAdapter, displayMember: "title", valueMember: "subtitle", width: 400, height: 350, theme: '' });
+        $("#jqxWidget").bind('select', function (event) {
+            if (event.args) {
+                var item = event.args.item;
+                if (item) {
+                    var valueelement = $("<div></div>");
+                    valueelement.html(item.value);
+                    var labelelement = $("<div></div>");
+                    labelelement.html("<b>" + item.label + "</b>");
+                    $("#selectionlog").children().remove();
+                    $("#selectionlog").append(labelelement);
+                    $("#selectionlog").append(valueelement);
                 }
             }
         });

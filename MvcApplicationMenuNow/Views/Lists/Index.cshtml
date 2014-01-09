@@ -30,7 +30,8 @@
                     datatype: "json",
                     datafields: [
                         { name: 'title' },
-                        { name: 'subtitle' }
+                        { name: 'subtitle' },
+                        { name: 'backgroundImage' }
                     ],
                     id: 'id',
                     url: 'http://rmservice-bb.apphb.com/Service1.svc/getAllGroups'
@@ -40,7 +41,23 @@
 
         var dataAdapter = new $.jqx.dataAdapter(source);
         // Create a jqxListBox
-        $("#jqxWidget").jqxListBox({ source: dataAdapter, displayMember: "title", valueMember: "subtitle", width: 400, height: 350, theme: '' });
+        $("#jqxWidget").jqxListBox({
+            source: dataAdapter,
+            displayMember: "title",
+            valueMember: "subtitle",
+            width: 400,
+            height: 350,
+            theme: '',
+            renderer: function (index, label, value) {
+                var records = dataAdapter.records;
+                var table = "";
+                table = '<table style="min-width: 150px;"><tr><td style="width:15px;"><img src="' + records[index].backgroundImage + '"height="50" width="50"></td><td colspan="2">' +'<b>'+ records[index].title + '</b>'+'</br>' + records[index].subtitle + '</td></tr></table>';
+
+
+
+                return table;
+            } 
+        });
 
         $("#jqxWidget").on('select', function (event) {
 
@@ -73,7 +90,13 @@
                 valueMember: "subtitle",
                 width: 400,
                 height: 350,
-                theme: ''
+                theme: '',
+                renderer: function (index, label, value) {
+                    var records = dataAdapter.records;
+                    var table = "";
+                    table = '<table style="min-width: 150px;"><tr><td style="width:15px;"><img src="' + records[index].backgroundImage + '"height="30" width="30"></td><td>' + records[index].title + '</td></tr></table>';
+                    return table;
+                } 
 
             });
 
@@ -92,7 +115,7 @@
                         var img = item.originalItem.backgroundImage;
                         console.log(img);
                         var hiddenelement = $("<div><input type='hidden' id='description'/>" + descr + "</div>");
-                        var pictures = $("<div>"+ "<img src='"+img+"'height='300' width='300'></div>");
+                        var pictures = $("<div>" + "<img src='" + img + "'height='300' width='300'></div>");
                         //console.log(hiddenelement);
                         $("#selectionlog").children().remove();
                         $("#selectionlog").append(labelelement);

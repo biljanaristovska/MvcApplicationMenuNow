@@ -71,7 +71,9 @@
                         { name: 'title' },
                         { name: 'subtitle' },
                         { name: 'description' },
-                        { name: 'backgroundImage' }
+                        { name: 'backgroundImage' },
+                        { name: 'content' }
+                        
                     ],
                     id: 'id',
                     url: url
@@ -106,21 +108,22 @@
                     var item = event.args.item;
                     if (item) {
                         var valueelement = $("<div></div>");
-                        valueelement.html(item.value);
+                        valueelement.html("</br>Price: "+item.value);
                         var labelelement = $("<div></div>");
                         labelelement.html("<b>" + item.label + "</b>");
                         // var descr = $("<div></div>");
                         // valueelement.html(item.descr);
                         var descr = item.originalItem.description;
                         var img = item.originalItem.backgroundImage;
+                        var cont = item.originalItem.content;
                         console.log(img);
-                        var hiddenelement = $("<div><input type='hidden' id='description'/>" + descr + "</div>");
-                        var pictures = $("<div>" + "<img src='" + img + "'height='300' width='300'></div>");
+                        var hiddenelement = $("<div><input type='hidden' id='description'/>" + descr + " </br></br>" + cont + "</div>");
+                        var pictures = $("<div>" + "<img src='" + img + "'height='200' width='300'></div>");
                         //console.log(hiddenelement);
                         $("#selectionlog").children().remove();
                         $("#selectionlog").append(labelelement);
-                        $("#selectionlog").append(valueelement);
                         $("#selectionlog").append(hiddenelement);
+                        $("#selectionlog").append(valueelement);
                         $("#selectionlog").append(pictures);
                     }
                 }

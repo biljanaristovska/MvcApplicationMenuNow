@@ -24,23 +24,39 @@ Password: <input type="text" id="password" /></br>
             url: url,
             dataType: 'json',
             success: function (data) {
-                //console.log(data);
                 var temp = data.getAllSettingsResult;
                 console.log(temp);
                 for (var index in temp) {
                     if (temp[index].Key == "password") {
                         var val = temp[index].Value;
                     }
+                    else if (temp[index].Key == "logo") {
+                        var image = temp[index].Value;
+                    }
+                    else if (temp[index].Key == "name") {
+                        var name = temp[index].Value;
+                    }
+
                 }
                 var pass = $("#password").val();
                 if (pass == val) {
-                    window.location.href = 'Lists';
+                    $.ajax({
+                        type: 'POST',
+                        url: '@Url.Action("SaveToSession")',
+                        contentType: "application/json; charset=utf-8", //што праќаме
+                        data: JSON.stringify({ url: urlVal, image: image, name: name }),
+                        success: function (data) {
+                            window.location.href = 'Lists';
+                        }
+                    });
                 }
                 else {
                     window.location.href = 'Home';
                 }
             }
         });
+
+
     }
 
     

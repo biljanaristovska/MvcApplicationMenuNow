@@ -1,8 +1,11 @@
-﻿@{
+﻿@model MvcApplicationMenuNow.Models.Main
+@{
     ViewBag.Title = "Index";
 }
 
 <div id='content'>
+       <b>@Html.Label(@Model.name)</b>
+       <img src="@Model.image" style="width: 50px; height: 50px"/>
        <table> 
        <tr>
        <td>
@@ -17,14 +20,17 @@
         </td>
         </tr>
        </table>
-        
+       @Html.Hidden("url", Model.url)             
 </div>
 
 @section scripts{ 
 <script type="text/javascript">
 
     $(document).ready(function () {
+     var urlVal = $("#url").val();        
+
         // prepare the data
+        
         var source =
                 {
                     datatype: "json",
@@ -34,7 +40,7 @@
                         { name: 'backgroundImage' }
                     ],
                     id: 'id',
-                    url: 'http://rmservice-bb.apphb.com/Service1.svc/getAllGroups'
+                    url: urlVal + '/Service1.svc/getAllGroups'
 
                 };
 
@@ -51,19 +57,19 @@
             renderer: function (index, label, value) {
                 var records = dataAdapter.records;
                 var table = "";
-                table = '<table style="min-width: 150px;"><tr><td style="width:15px;"><img src="' + records[index].backgroundImage + '"height="50" width="50"></td><td colspan="2">' +'<b>'+ records[index].title + '</b>'+'</br>' + records[index].subtitle + '</td></tr></table>';
+                table = '<table style="min-width: 150px;"><tr><td style="width:15px;"><img src="' + records[index].backgroundImage + '"height="50" width="50"></td><td colspan="2">' + '<b>' + records[index].title + '</b>' + '</br>' + records[index].subtitle + '</td></tr></table>';
 
 
 
                 return table;
-            } 
+            }
         });
 
         $("#jqxWidget").on('select', function (event) {
 
             var args = event.args;
             var index = args.item.index;
-            var url = 'http://rmservice-bb.apphb.com/Service1.svc/getAllItemsByGroup?group=group' + (index + 1);
+            var url = urlVal + 'Service1.svc/getAllItemsByGroup?group=group' + (index + 1);
             var source =
                 {
                     datatype: "json",
@@ -73,7 +79,7 @@
                         { name: 'description' },
                         { name: 'backgroundImage' },
                         { name: 'content' }
-                        
+
                     ],
                     id: 'id',
                     url: url
@@ -98,7 +104,7 @@
                     var table = "";
                     table = '<table style="min-width: 150px;"><tr><td style="width:15px;"><img src="' + records[index].backgroundImage + '"height="30" width="30"></td><td>' + records[index].title + '</td></tr></table>';
                     return table;
-                } 
+                }
 
             });
 
@@ -108,7 +114,7 @@
                     var item = event.args.item;
                     if (item) {
                         var valueelement = $("<div></div>");
-                        valueelement.html("</br>Price: "+item.value);
+                        valueelement.html("</br>Price: " + item.value);
                         var labelelement = $("<div></div>");
                         labelelement.html("<b>" + item.label + "</b>");
                         // var descr = $("<div></div>");
@@ -129,9 +135,6 @@
                 }
             });
         });
-
-
-
     });
 
 </script>

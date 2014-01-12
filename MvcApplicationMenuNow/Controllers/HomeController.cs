@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using MvcApplicationMenuNow.Models;
 
 namespace MvcApplicationMenuNow.Controllers
 {
@@ -16,13 +17,15 @@ namespace MvcApplicationMenuNow.Controllers
             return View();
         }
 
-        public ActionResult CallJson(string urlVal)
+        public ActionResult SaveToSession(string url, string image, string name)
         {
-
-        
-
-            return View();
-
+            Main main = new Main();
+            main.url = url;
+            main.image = image;
+            main.name = name;
+            Session["Main"] = main;
+            return Json(true);
         }
+
     }
 }

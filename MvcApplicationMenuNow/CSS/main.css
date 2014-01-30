@@ -12,5 +12,22 @@
 
 body
 {
-background-image: url(Images/login.jpg);
+    background-image: url(Images/login.jpg);
+}
+
+.imageLogo
+{
+    border:2px solid #b0b0b0;
+    padding:20px 60px; 
+    @*background:#dddddd;*@
+    height: 80px;
+    width:1225px;
+       
+}
+
+.logoName
+{
+    font-size: 20px;
+    font-weight: bold;
+    padding-left: 20px;
 }
